@@ -174,7 +174,7 @@ nav {
   width: 100%;
   max-width: 520px;
   border-radius: 16px;
-  filter: drop-shadow(0 24px 48px rgba(0,0,0,0.16));
+  filter: drop-shadow(0 24px 48px rgba(0,0,0,0.15));
   transition: transform 0.3s ease;
 }
 
