@@ -124,25 +124,25 @@ const colorNameEl = document.getElementById('colorName');
 const omiImg     = document.getElementById('omiImg');
 
 const colorMap = {
-  silver: { name: 'Silver',      filter: 'none' },
-  black:  { name: 'Slate Black', filter: 'brightness(0.35) contrast(1.1)' },
-  sand:   { name: 'Warm Sand',   filter: 'sepia(0.5) saturate(0.8) brightness(1.05)' },
+  silver: { name: 'Silver',      image: 'omi-silver.png' },
+  black:  { name: 'Slate Black', image: 'omi-black.png' },
+  sand:   { name: 'Warm Sand',   image: 'omi-sand.png' },
+  pink:   { name: 'Rose Pink',   image: 'omi-pink.png' },
 };
 
 colorBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     colorBtns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-    const { name, filter } = colorMap[btn.dataset.color];
+    const { name, image } = colorMap[btn.dataset.color];
     colorNameEl.textContent = name;
     omiImg.style.opacity = '0';
     omiImg.style.transform = 'scale(0.95)';
     setTimeout(() => {
-      const base = 'drop-shadow(0 20px 44px rgba(0,0,0,0.6))';
-      omiImg.style.filter = filter === 'none' ? base : `${filter} ${base}`;
+      omiImg.src = image;
       omiImg.style.opacity = '1';
       omiImg.style.transform = '';
-    }, 180);
+    }, 200);
   });
 });
 
@@ -162,13 +162,17 @@ document.querySelectorAll('.faq-q').forEach(btn => {
 // GALLERY CAROUSEL — Horizontal 3D Slideshow
 // ══════════════════════════════
 (function () {
-  const track      = document.getElementById('carouselTrack');
-  const prevBtn    = document.getElementById('carouselPrev');
-  const nextBtn    = document.getElementById('carouselNext');
-  const dotsEl     = document.getElementById('carouselDots');
-  const counterEl  = document.getElementById('carouselCounter');
-  const items      = track.querySelectorAll('.carousel-item');
-  const COUNT      = items.length;
+  const track          = document.getElementById('carouselTrack');
+  const prevBtn        = document.getElementById('carouselPrev');
+  const nextBtn        = document.getElementById('carouselNext');
+  const dotsEl         = document.getElementById('carouselDots');
+  const counterEl      = document.getElementById('carouselCounter');
+  const captionTextEl  = document.getElementById('carouselCaptionText');
+  const items          = track.querySelectorAll('.carousel-item');
+  const COUNT          = items.length;
+
+  // Caption texts for each image
+  const captions = ['Front view', 'Front view', 'Side view', 'On your desk', 'LCD close-up', 'In hand'];
 
   // Build indicator dots
   items.forEach((_, i) => {
@@ -217,19 +221,21 @@ document.querySelectorAll('.faq-q').forEach(btn => {
       }
     });
 
+    // Update caption
+    if (captionTextEl) {
+      captionTextEl.textContent = captions[carouselIndex] || '';
+    }
+
     // Update dots
     cdots.forEach((d, i) => d.classList.toggle('active', i === carouselIndex));
 
     // Counter
     counterEl.textContent = `${carouselIndex + 1} / ${COUNT}`;
-
-    // Buttons
-    prevBtn.disabled = carouselIndex === 0;
-    nextBtn.disabled = carouselIndex === COUNT - 1;
   }
 
   function carouselGoTo(index) {
-    carouselIndex = Math.max(0, Math.min(index, COUNT - 1));
+    // Wrap around using modulo for infinite loop
+    carouselIndex = ((index % COUNT) + COUNT) % COUNT;
     updateCarousel();
   }
 

@@ -300,7 +300,7 @@ h1 em { font-style: italic; color: var(--gray-3); }
   50%      { opacity: 1; transform: scale(1.08); }
 }
 .omi-img {
-  width: 100%; max-width: 480px; position: relative;
+  width: 100%; max-width: 900px; position: relative;
   filter: drop-shadow(0 20px 44px rgba(0,0,0,0.6));
   transition: transform 0.4s ease, filter 0.3s ease, opacity 0.2s ease;
 }
@@ -339,8 +339,18 @@ h1 em { font-style: italic; color: var(--gray-3); }
 /* ══════════════════════════════
    SLIDE 2 — GALLERY CAROUSEL
 ══════════════════════════════ */
-.gallery-inner { gap: 20px; overflow: hidden; }
+.gallery-inner { gap: 24px; overflow: hidden; }
 .gallery-inner .slide-header h2 { margin-bottom: 20px; }
+
+/* Carousel wrapper with side buttons */
+.carousel-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
 
 /* 3D Carousel Viewport */
 .carousel-viewport {
@@ -352,6 +362,7 @@ h1 em { font-style: italic; color: var(--gray-3); }
   display: flex;
   align-items: center;
   justify-content: center;
+  flex: 1;
 }
 
 /* Sliding track with 3D transforms */
@@ -400,30 +411,38 @@ h1 em { font-style: italic; color: var(--gray-3); }
   display: block;
 }
 
-/* Caption overlay */
-.carousel-caption {
-  position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: 16px 20px;
-  background: linear-gradient(transparent, rgba(0,0,0,0.75));
+/* Caption below carousel */
+.carousel-caption-area {
+  width: 100%;
+  text-align: center;
+  padding-top: 8px;
+  min-height: 24px;
+}
+.carousel-caption-text {
   color: var(--gray-3);
   font-size: 11px;
   letter-spacing: 1.5px;
   text-transform: uppercase;
-  opacity: 0;
-  transition: opacity 0.35s;
-}
-.carousel-item.active .carousel-caption { opacity: 1; }
-
-/* Controls row */
-.carousel-controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2px;
+  margin: 0;
 }
 
-.carousel-arrows { display: flex; gap: 10px; }
+/* Side arrow buttons */
+.carousel-btn-side {
+  flex-shrink: 0;
+  width: 38px; height: 38px;
+  border-radius: 50%;
+  background: #111;
+  border: 1px solid var(--gray-1);
+  color: var(--off-white);
+  font-size: 15px;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+  line-height: 1;
+  padding: 0;
+}
+.carousel-btn-side:hover { background: #1c1c1c; border-color: #2a2a2a; }
+.carousel-btn-side:disabled { opacity: 0.2; cursor: default; }
 
 .carousel-btn {
   width: 38px; height: 38px;
@@ -436,9 +455,19 @@ h1 em { font-style: italic; color: var(--gray-3); }
   display: flex; align-items: center; justify-content: center;
   transition: background 0.2s, border-color 0.2s, opacity 0.2s;
   line-height: 1;
+  padding: 0;
 }
 .carousel-btn:hover { background: #1c1c1c; border-color: #2a2a2a; }
 .carousel-btn:disabled { opacity: 0.2; cursor: default; }
+
+/* Controls row (dots and counter) */
+.carousel-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding-top: 8px;
+}
 
 .carousel-dots { display: flex; gap: 8px; align-items: center; }
 .carousel-dot {
@@ -570,13 +599,15 @@ h1 em { font-style: italic; color: var(--gray-3); }
   .hero-actions { justify-content: center; flex-wrap: wrap; }
   .hero-product { order: -1; }
   .product-glow { width: 240px; height: 160px; }
-  .omi-img { max-width: 300px; }
+  .omi-img { max-width: 350px; }
 
   .feature-grid { grid-template-columns: 1fr; }
   .feature-card.large { grid-column: 1; }
 
+  .carousel-wrapper { gap: 12px; }
   .carousel-viewport { height: 280px; }
   .carousel-item { width: 280px; height: 200px; }
+  .carousel-btn-side { width: 32px; height: 32px; font-size: 13px; }
 
   .steps { grid-template-columns: 1fr; gap: 10px; }
 

@@ -52,6 +52,7 @@
               <button class="color-btn active" data-color="silver" style="background:#c8c8c8;" title="Silver"></button>
               <button class="color-btn" data-color="black" style="background:#2a2a2a;" title="Slate Black"></button>
               <button class="color-btn" data-color="sand" style="background:#c9a87c;" title="Warm Sand"></button>
+              <button class="color-btn" data-color="pink" style="background:#e89bb5;" title="Rose Pink"></button>
             </div>
             <p class="color-name" id="colorName">Silver</p>
           </div>
@@ -62,7 +63,7 @@
         </div>
         <div class="hero-product">
           <div class="product-glow"></div>
-          <img src="omiblackbg.png" alt="Omi" class="omi-img" id="omiImg" />
+          <img src="omi-silver.png" alt="Omi" class="omi-img" id="omiImg" />
         </div>
       </div>
     </section>
@@ -113,34 +114,43 @@
           <h2>Every angle.<br>Pure detail.</h2>
         </div>
 
-        <!-- Carousel -->
-        <div class="carousel-viewport" id="carouselViewport">
-          <div class="carousel-track" id="carouselTrack">
-            <div class="carousel-item active">
-              <img src="omi.png" alt="Omi front view" draggable="false" />
-              <div class="carousel-caption">Front view</div>
-            </div>
-            <div class="carousel-item">
-              <img src="omi.png" alt="Omi side view" draggable="false" />
-              <div class="carousel-caption">Side view</div>
-            </div>
-            <div class="carousel-item">
-              <img src="omi.png" alt="Omi on your desk" draggable="false" />
-              <div class="carousel-caption">On your desk</div>
-            </div>
-            <div class="carousel-item">
-              <img src="omi.png" alt="Omi LCD close-up" draggable="false" />
-              <div class="carousel-caption">LCD close-up</div>
+        <!-- Carousel with side arrows -->
+        <div class="carousel-wrapper">
+          <button class="carousel-btn carousel-btn-side carousel-btn-prev" id="carouselPrev" aria-label="Previous">&#8592;</button>
+          
+          <div class="carousel-viewport" id="carouselViewport">
+            <div class="carousel-track" id="carouselTrack">
+              <div class="carousel-item active">
+                <img src="omi.png" alt="Omi front view" draggable="false" />
+              </div>
+              <div class="carousel-item active">
+                <img src="omifront.png" alt="Omi front view" draggable="false" />
+              </div>
+              <div class="carousel-item">
+                <img src="omiside.png" alt="Omi side view" draggable="false" />
+              </div>
+              <div class="carousel-item">
+                <img src="omidesk.png" alt="Omi on your desk" draggable="false" />
+              </div>
+              <div class="carousel-item">
+                <img src="omilcd.png" alt="Omi LCD close-up" draggable="false" />
+              </div>
+              <div class="carousel-item">
+                <img src="omiinhand.png" alt="Omi in hand" draggable="false" />
+              </div>
             </div>
           </div>
+          
+          <button class="carousel-btn carousel-btn-side carousel-btn-next" id="carouselNext" aria-label="Next">&#8594;</button>
         </div>
 
-        <!-- Controls -->
+        <!-- Caption below image -->
+        <div class="carousel-caption-area" id="carouselCaptionArea">
+          <p class="carousel-caption-text" id="carouselCaptionText">Front view</p>
+        </div>
+
+        <!-- Controls row (dots and counter only) -->
         <div class="carousel-controls">
-          <div class="carousel-arrows">
-            <button class="carousel-btn" id="carouselPrev" aria-label="Previous">&#8592;</button>
-            <button class="carousel-btn" id="carouselNext" aria-label="Next">&#8594;</button>
-          </div>
           <div class="carousel-dots" id="carouselDots"></div>
           <div class="carousel-counter" id="carouselCounter">1 / 4</div>
         </div>
