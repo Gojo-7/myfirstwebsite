@@ -10,10 +10,7 @@ const TOTAL      = slides.length;
 
 let current      = 0;
 let isAnimating  = false;
-const ANIM_DURATION = 800; // ms — matches CSS transition
-
-// Dark slides (index-based)
-const darkSlides = [3, 5];
+const ANIM_DURATION = 800;
 
 // ── Build dots ──
 slides.forEach((_, i) => {
@@ -31,29 +28,16 @@ function goTo(index) {
   if (index === current || isAnimating) return;
   isAnimating = true;
 
-  // Deactivate old
   slides[current].classList.remove('active');
-
   current = Math.max(0, Math.min(index, TOTAL - 1));
-
-  // Move container
   container.style.transform = `translateY(-${current * 100}vh)`;
-
-  // Activate new
   slides[current].classList.add('active');
 
-  // Update nav + dots
   updateUI();
-
   setTimeout(() => { isAnimating = false; }, ANIM_DURATION);
 }
 
 function updateUI() {
-  const isDark = darkSlides.includes(current);
-
-  // Navbar
-  navbar.classList.toggle('dark-nav', isDark);
-
   // Nav links
   document.querySelectorAll('.nav-item').forEach(link => {
     link.classList.toggle('active', parseInt(link.dataset.slide) === current);
@@ -62,7 +46,6 @@ function updateUI() {
   // Dots
   dots.forEach((dot, i) => {
     dot.classList.toggle('active', i === current);
-    dot.classList.toggle('light', isDark);
   });
 }
 
@@ -116,7 +99,6 @@ document.querySelectorAll('[data-slide]').forEach(el => {
   el.addEventListener('click', (e) => {
     e.preventDefault();
     goTo(parseInt(el.dataset.slide));
-    // Close mobile menu if open
     hamburger.classList.remove('open');
     mobileMenu.classList.remove('open');
   });
@@ -157,7 +139,7 @@ colorBtns.forEach(btn => {
     omiImg.style.opacity = '0';
     omiImg.style.transform = 'scale(0.95)';
     setTimeout(() => {
-      const base = 'drop-shadow(0 20px 44px rgba(0,0,0,0.14))';
+      const base = 'drop-shadow(0 20px 44px rgba(0,0,0,0.6))';
       omiImg.style.filter = filter === 'none' ? base : `${filter} ${base}`;
       omiImg.style.opacity = '1';
       omiImg.style.transform = '';
