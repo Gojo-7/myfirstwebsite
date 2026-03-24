@@ -38,15 +38,10 @@ function goTo(index) {
 }
 
 function updateUI() {
-  // Nav links
   document.querySelectorAll('.nav-item').forEach(link => {
     link.classList.toggle('active', parseInt(link.dataset.slide) === current);
   });
-
-  // Dots
-  dots.forEach((dot, i) => {
-    dot.classList.toggle('active', i === current);
-  });
+  dots.forEach((dot, i) => dot.classList.toggle('active', i === current));
 }
 
 // ── Initial state ──
@@ -55,17 +50,19 @@ updateUI();
 
 // ══════════════════════════════
 // SCROLL — mousewheel & touch
+// (blocked when inside carousel)
 // ══════════════════════════════
 let touchStartY = 0;
 let lastScrollTime = 0;
 const SCROLL_COOLDOWN = 900;
 
 window.addEventListener('wheel', (e) => {
+  // If horizontal scroll on gallery slide, let carousel handle it
+  if (current === 2 && Math.abs(e.deltaX) > Math.abs(e.deltaY)) return;
   e.preventDefault();
   const now = Date.now();
   if (now - lastScrollTime < SCROLL_COOLDOWN) return;
   lastScrollTime = now;
-
   if (e.deltaY > 30)       goTo(current + 1);
   else if (e.deltaY < -30) goTo(current - 1);
 }, { passive: false });
@@ -79,7 +76,6 @@ window.addEventListener('touchend', (e) => {
   const now = Date.now();
   if (now - lastScrollTime < SCROLL_COOLDOWN) return;
   lastScrollTime = now;
-
   if (diff > 40)       goTo(current + 1);
   else if (diff < -40) goTo(current - 1);
 }, { passive: true });
@@ -90,6 +86,11 @@ window.addEventListener('touchend', (e) => {
 window.addEventListener('keydown', (e) => {
   if (e.key === 'ArrowDown' || e.key === 'PageDown') goTo(current + 1);
   if (e.key === 'ArrowUp'   || e.key === 'PageUp')   goTo(current - 1);
+  // left/right arrows navigate carousel when on gallery slide
+  if (current === 2) {
+    if (e.key === 'ArrowLeft')  carouselGoTo(carouselIndex - 1);
+    if (e.key === 'ArrowRight') carouselGoTo(carouselIndex + 1);
+  }
 });
 
 // ══════════════════════════════
@@ -132,10 +133,8 @@ colorBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     colorBtns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
     const { name, filter } = colorMap[btn.dataset.color];
     colorNameEl.textContent = name;
-
     omiImg.style.opacity = '0';
     omiImg.style.transform = 'scale(0.95)';
     setTimeout(() => {
@@ -158,3 +157,134 @@ document.querySelectorAll('.faq-q').forEach(btn => {
     if (!isOpen) item.classList.add('open');
   });
 });
+
+// ══════════════════════════════
+// GALLERY CAROUSEL — Horizontal 3D Slideshow
+// ══════════════════════════════
+(function () {
+  const track      = document.getElementById('carouselTrack');
+  const prevBtn    = document.getElementById('carouselPrev');
+  const nextBtn    = document.getElementById('carouselNext');
+  const dotsEl     = document.getElementById('carouselDots');
+  const counterEl  = document.getElementById('carouselCounter');
+  const items      = track.querySelectorAll('.carousel-item');
+  const COUNT      = items.length;
+
+  // Build indicator dots
+  items.forEach((_, i) => {
+    const d = document.createElement('button');
+    d.classList.add('carousel-dot');
+    d.setAttribute('aria-label', `Image ${i + 1}`);
+    d.addEventListener('click', () => carouselGoTo(i));
+    dotsEl.appendChild(d);
+  });
+
+  const cdots = dotsEl.querySelectorAll('.carousel-dot');
+
+  // ── Update carousel transforms ──
+  function updateCarousel() {
+    items.forEach((item, i) => {
+      item.classList.remove('active');
+      
+      // Calculate relative position to active image
+      let distance = i - carouselIndex;
+      
+      // Wrap around for circular carousel feel
+      if (distance > COUNT / 2) distance -= COUNT;
+      if (distance < -COUNT / 2) distance += COUNT;
+      
+      if (distance === 0) {
+        // Active center image
+        item.classList.add('active');
+        item.style.transform = 'translateX(0) scale(1) translateZ(0)';
+        item.style.opacity = '1';
+        item.style.zIndex = '10';
+      } else if (distance === 1) {
+        // Next image on right
+        item.style.transform = 'translateX(380px) scale(0.75) translateZ(-400px)';
+        item.style.opacity = '0.5';
+        item.style.zIndex = '5';
+      } else if (distance === -1) {
+        // Previous image on left
+        item.style.transform = 'translateX(-380px) scale(0.75) translateZ(-400px)';
+        item.style.opacity = '0.5';
+        item.style.zIndex = '5';
+      } else {
+        // Hidden images
+        item.style.transform = 'translateX(0) scale(0.5) translateZ(-600px)';
+        item.style.opacity = '0';
+        item.style.zIndex = '1';
+      }
+    });
+
+    // Update dots
+    cdots.forEach((d, i) => d.classList.toggle('active', i === carouselIndex));
+
+    // Counter
+    counterEl.textContent = `${carouselIndex + 1} / ${COUNT}`;
+
+    // Buttons
+    prevBtn.disabled = carouselIndex === 0;
+    nextBtn.disabled = carouselIndex === COUNT - 1;
+  }
+
+  function carouselGoTo(index) {
+    carouselIndex = Math.max(0, Math.min(index, COUNT - 1));
+    updateCarousel();
+  }
+
+  // expose index globally so keyboard can use it
+  window.carouselIndex = 0;
+  window.carouselGoTo  = carouselGoTo;
+
+  // Arrow buttons
+  prevBtn.addEventListener('click', () => carouselGoTo(carouselIndex - 1));
+  nextBtn.addEventListener('click', () => carouselGoTo(carouselIndex + 1));
+
+  // ── Mouse drag ──
+  let dragStartX   = 0;
+  let isDragging   = false;
+  let dragThreshold = 0;
+
+  track.addEventListener('mousedown', (e) => {
+    isDragging   = true;
+    dragStartX   = e.clientX;
+    dragThreshold = 0;
+    track.classList.add('dragging');
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isDragging) return;
+    const delta = dragStartX - e.clientX;
+    dragThreshold = delta;
+  });
+
+  window.addEventListener('mouseup', (e) => {
+    if (!isDragging) return;
+    isDragging = false;
+    track.classList.remove('dragging');
+    
+    if (dragThreshold > 50)       carouselGoTo(carouselIndex + 1);
+    else if (dragThreshold < -50) carouselGoTo(carouselIndex - 1);
+    else                          updateCarousel(); // snap back
+  });
+
+  // ── Touch swipe (horizontal) ──
+  let touchStartX = 0;
+
+  track.addEventListener('touchstart', (e) => {
+    touchStartX = e.touches[0].clientX;
+  }, { passive: true });
+
+  track.addEventListener('touchend', (e) => {
+    const diff = touchStartX - e.changedTouches[0].clientX;
+    if (diff > 40)       carouselGoTo(carouselIndex + 1);
+    else if (diff < -40) carouselGoTo(carouselIndex - 1);
+  }, { passive: true });
+
+  // ── Init ──
+  carouselGoTo(0);
+
+  // Recalculate on resize
+  window.addEventListener('resize', () => carouselGoTo(carouselIndex));
+})();

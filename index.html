@@ -56,13 +56,13 @@
             <p class="color-name" id="colorName">Silver</p>
           </div>
           <div class="hero-actions">
-            <button class="btn-primary" data-slide="5">Order Now — $39</button>
+            <button class="btn-primary" data-slide="5">Order Now — $89</button>
             <button class="btn-ghost" data-slide="1">Learn more ↓</button>
           </div>
         </div>
         <div class="hero-product">
           <div class="product-glow"></div>
-          <img src="omi.png" alt="Omi" class="omi-img" id="omiImg" />
+          <img src="omiblackbg.png" alt="Omi" class="omi-img" id="omiImg" />
         </div>
       </div>
     </section>
@@ -104,35 +104,47 @@
       </div>
     </section>
 
-    <!-- SLIDE 2 — GALLERY -->
+    <!-- SLIDE 2 — GALLERY CAROUSEL -->
     <section class="slide" id="slide-2">
       <div class="slide-inner gallery-inner">
+
         <div class="slide-header">
           <div class="eyebrow">Product Gallery</div>
           <h2>Every angle.<br>Pure detail.</h2>
         </div>
-        <div class="gallery-grid">
-          <div class="gallery-item large">
-            <img src="omifront.png" alt="Omi front" />
-            <div class="gallery-caption">Front view</div>
-          </div>
-          <div class="gallery-item">
-            <img src="omiside.png" alt="Omi side" />
-            <div class="gallery-caption">Side view</div>
-          </div>
-          <div class="gallery-item">
-            <img src="omidesk.png" alt="Omi desk" />
-            <div class="gallery-caption">On your desk</div>
-          </div>
-          <div class="gallery-item">
-            <img src="omilcd.png" alt="Omi LCD" />
-            <div class="gallery-caption">LCD close-up</div>
-          </div>
-          <div class="gallery-item">
-            <img src="omiinhand.png" alt="Omi in hand" />
-            <div class="gallery-caption">Omi in hand</div>
+
+        <!-- Carousel -->
+        <div class="carousel-viewport" id="carouselViewport">
+          <div class="carousel-track" id="carouselTrack">
+            <div class="carousel-item active">
+              <img src="omi.png" alt="Omi front view" draggable="false" />
+              <div class="carousel-caption">Front view</div>
+            </div>
+            <div class="carousel-item">
+              <img src="omi.png" alt="Omi side view" draggable="false" />
+              <div class="carousel-caption">Side view</div>
+            </div>
+            <div class="carousel-item">
+              <img src="omi.png" alt="Omi on your desk" draggable="false" />
+              <div class="carousel-caption">On your desk</div>
+            </div>
+            <div class="carousel-item">
+              <img src="omi.png" alt="Omi LCD close-up" draggable="false" />
+              <div class="carousel-caption">LCD close-up</div>
+            </div>
           </div>
         </div>
+
+        <!-- Controls -->
+        <div class="carousel-controls">
+          <div class="carousel-arrows">
+            <button class="carousel-btn" id="carouselPrev" aria-label="Previous">&#8592;</button>
+            <button class="carousel-btn" id="carouselNext" aria-label="Next">&#8594;</button>
+          </div>
+          <div class="carousel-dots" id="carouselDots"></div>
+          <div class="carousel-counter" id="carouselCounter">1 / 4</div>
+        </div>
+
       </div>
     </section>
 
@@ -208,7 +220,7 @@
       <div class="slide-inner order-inner">
         <div class="order-content">
           <div class="eyebrow">Ready to meet Omi?</div>
-          <h2>$39.<br>Free shipping.<br>Ships in 2 weeks.</h2>
+          <h2>$89.<br>Free shipping.<br>Ships in 2 weeks.</h2>
           <p>30-day returns. 1-year warranty included.</p>
           <button class="btn-primary large">Order Now</button>
         </div>
