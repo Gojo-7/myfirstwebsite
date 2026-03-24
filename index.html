@@ -10,127 +10,220 @@
 <body>
 
   <!-- NAV -->
-  <nav>
+  <nav id="navbar">
     <div class="nav-logo">OMI</div>
     <ul class="nav-links">
-      <li><a href="#features">Features</a></li>
-      <li><a href="#how">How it works</a></li>
-      <li><a href="#specs">Specs</a></li>
+      <li><a href="#" data-slide="0" class="nav-item active">Home</a></li>
+      <li><a href="#" data-slide="1" class="nav-item">Features</a></li>
+      <li><a href="#" data-slide="2" class="nav-item">Gallery</a></li>
+      <li><a href="#" data-slide="3" class="nav-item">How it works</a></li>
+      <li><a href="#" data-slide="4" class="nav-item">FAQ</a></li>
     </ul>
-    <a href="#buy" class="nav-cta">Order Now</a>
+    <a href="#" class="nav-cta" data-slide="5">Order Now</a>
+    <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="hero-text">
-      <div class="hero-eyebrow">Introducing Omi</div>
-      <h1 class="hero-title">Meet your new<br><em>favourite thing.</em></h1>
-      <p class="hero-sub">A brushed aluminium interactive toy with a pixel-art face. It listens, talks back, and reacts to your touch.</p>
-      <div class="hero-actions">
-        <a href="#buy" class="btn-primary">Order Now — $89</a>
-        <a href="#features" class="btn-ghost">Learn more ↓</a>
-      </div>
-    </div>
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#" class="mob-link" data-slide="0">Home</a>
+    <a href="#" class="mob-link" data-slide="1">Features</a>
+    <a href="#" class="mob-link" data-slide="2">Gallery</a>
+    <a href="#" class="mob-link" data-slide="3">How it works</a>
+    <a href="#" class="mob-link" data-slide="4">FAQ</a>
+    <a href="#" class="mob-link cta" data-slide="5">Order Now</a>
+  </div>
 
-    <!-- SVG PRODUCT ILLUSTRATION -->
-    <div class="product-wrap">
-      <div class="product-glow"></div>
+  <!-- SLIDE DOTS -->
+  <div class="slide-dots" id="slideDots"></div>
 
-      <img src="omi.png" alt="Omi Interactive Toy" class="omi-img" />
+  <!-- SLIDES CONTAINER -->
+  <div class="slides-container" id="slidesContainer">
 
-      <p class="touch-hint" id="touchHint">tap Omi ✦</p>
-    </div>
-  </section>
+    <!-- SLIDE 0 — HERO -->
+    <section class="slide" id="slide-0">
+      <div class="slide-inner hero-inner">
+        <div class="hero-text">
+          <div class="eyebrow">Introducing Omi</div>
+          <h1>Meet your new<br><em>favourite thing.</em></h1>
+          <p class="sub">A brushed aluminium interactive toy with a pixel-art face. It listens, talks back, and reacts to your touch.</p>
+          <div class="color-picker">
+            <p class="color-label">Choose your colour</p>
+            <div class="color-options">
+              <button class="color-btn active" data-color="silver" style="background:#c8c8c8;" title="Silver"></button>
+              <button class="color-btn" data-color="black" style="background:#2a2a2a;" title="Slate Black"></button>
+              <button class="color-btn" data-color="sand" style="background:#c9a87c;" title="Warm Sand"></button>
+            </div>
+            <p class="color-name" id="colorName">Silver</p>
+          </div>
+          <div class="hero-actions">
+            <button class="btn-primary" data-slide="5">Order Now — $89</button>
+            <button class="btn-ghost" data-slide="1">Learn more ↓</button>
+          </div>
+        </div>
+        <div class="hero-product">
+          <div class="product-glow"></div>
+          <img src="omi.png" alt="Omi" class="omi-img" id="omiImg" />
+        </div>
+      </div>
+    </section>
 
-  <!-- FEATURES -->
-  <section id="features" class="features">
-    <div class="section-label">What makes Omi special</div>
-    <h2 class="section-title">Thoughtfully built.<br>Genuinely alive.</h2>
-    <div class="feature-grid">
-      <div class="feature-card large">
-        <div class="feature-icon">🖥️</div>
-        <h3>Pixel-Art LCD Face</h3>
-        <p>Omi's screen shows an expressive pixel face that blinks, smiles, and reacts in real time. Every emotion rendered in charming 8-bit style.</p>
+    <!-- SLIDE 1 — FEATURES -->
+    <section class="slide" id="slide-1">
+      <div class="slide-inner features-inner">
+        <div class="slide-header">
+          <div class="eyebrow">What makes Omi special</div>
+          <h2>Thoughtfully built.<br>Genuinely alive.</h2>
+        </div>
+        <div class="feature-grid">
+          <div class="feature-card large">
+            <div class="ficon">🖥️</div>
+            <h3>Pixel-Art LCD Face</h3>
+            <p>Omi's screen shows an expressive pixel face that blinks, smiles, and reacts in real time.</p>
+          </div>
+          <div class="feature-card">
+            <div class="ficon">🎙️</div>
+            <h3>Talks Back</h3>
+            <p>Ask anything. Omi answers out loud with a warm, natural voice.</p>
+          </div>
+          <div class="feature-card">
+            <div class="ficon">✋</div>
+            <h3>Touch Reactive</h3>
+            <p>Tap it, poke it, pet it. Omi's face reacts to every touch.</p>
+          </div>
+          <div class="feature-card">
+            <div class="ficon">🔩</div>
+            <h3>Brushed Aluminium</h3>
+            <p>Premium metal build. Feels as good as it looks on any shelf.</p>
+          </div>
+          <div class="feature-card">
+            <div class="ficon">🔒</div>
+            <h3>Private by Design</h3>
+            <p>Omi only listens when you press the button. No always-on mic.</p>
+          </div>
+        </div>
       </div>
-      <div class="feature-card">
-        <div class="feature-icon">🎙️</div>
-        <h3>Talks Back</h3>
-        <p>Ask anything. Omi answers out loud with a warm, natural voice.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">✋</div>
-        <h3>Touch Reactive</h3>
-        <p>Tap it, poke it, pet it. Omi's face reacts to every touch.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔩</div>
-        <h3>Brushed Aluminium</h3>
-        <p>Premium metal build. Feels as good as it looks on your shelf.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">🔒</div>
-        <h3>Private by Design</h3>
-        <p>Omi only listens when you press the button. No always-on mic.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- HOW IT WORKS -->
-  <section id="how" class="how">
-    <div class="section-label">How it works</div>
-    <h2 class="section-title">Three steps.<br>Endlessly useful.</h2>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">01</div>
-        <h4>You speak</h4>
-        <p>Press the side button and ask anything. Omi's face perks up and listens carefully.</p>
+    <!-- SLIDE 2 — GALLERY -->
+    <section class="slide" id="slide-2">
+      <div class="slide-inner gallery-inner">
+        <div class="slide-header">
+          <div class="eyebrow">Product Gallery</div>
+          <h2>Every angle.<br>Pure detail.</h2>
+        </div>
+        <div class="gallery-grid">
+          <div class="gallery-item large">
+            <img src="omi.png" alt="Omi front" />
+            <div class="gallery-caption">Front view</div>
+          </div>
+          <div class="gallery-item">
+            <img src="omi.png" alt="Omi side" />
+            <div class="gallery-caption">Side view</div>
+          </div>
+          <div class="gallery-item">
+            <img src="omi.png" alt="Omi desk" />
+            <div class="gallery-caption">On your desk</div>
+          </div>
+          <div class="gallery-item">
+            <img src="omi.png" alt="Omi LCD" />
+            <div class="gallery-caption">LCD close-up</div>
+          </div>
+        </div>
       </div>
-      <div class="step-divider">—</div>
-      <div class="step">
-        <div class="step-num">02</div>
-        <h4>Omi thinks</h4>
-        <p>A thinking expression appears on the screen while Omi processes your question.</p>
+    </section>
+
+    <!-- SLIDE 3 — HOW IT WORKS -->
+    <section class="slide dark" id="slide-3">
+      <div class="slide-inner how-inner">
+        <div class="slide-header">
+          <div class="eyebrow">How it works</div>
+          <h2>Three steps.<br>Endlessly useful.</h2>
+        </div>
+        <div class="steps">
+          <div class="step">
+            <div class="step-num">01</div>
+            <h4>You speak</h4>
+            <p>Press the side button and ask anything. Omi's face perks up and listens.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">02</div>
+            <h4>Omi thinks</h4>
+            <p>A thinking expression appears on screen while it processes your question.</p>
+          </div>
+          <div class="step">
+            <div class="step-num">03</div>
+            <h4>It responds</h4>
+            <p>Omi speaks back and its face lights up — happy, surprised, or curious.</p>
+          </div>
+        </div>
+        <!-- Specs inline -->
+        <div class="specs-inline">
+          <div class="spec-pill">2.4" LCD</div>
+          <div class="spec-pill">Dual-mic</div>
+          <div class="spec-pill">2W Speaker</div>
+          <div class="spec-pill">Wi-Fi + BT 5.0</div>
+          <div class="spec-pill">8hr Battery</div>
+          <div class="spec-pill">180×70×70mm</div>
+        </div>
       </div>
-      <div class="step-divider">—</div>
-      <div class="step">
-        <div class="step-num">03</div>
-        <h4>It responds</h4>
-        <p>Omi speaks back and its face lights up — happy, surprised, or curious to match.</p>
+    </section>
+
+    <!-- SLIDE 4 — FAQ -->
+    <section class="slide" id="slide-4">
+      <div class="slide-inner faq-inner">
+        <div class="slide-header">
+          <div class="eyebrow">FAQ</div>
+          <h2>Got questions?<br>We've got answers.</h2>
+        </div>
+        <div class="faq-list">
+          <div class="faq-item">
+            <button class="faq-q">What can I ask Omi? <span class="faq-icon">+</span></button>
+            <div class="faq-a"><p>Omi is powered by AI — ask trivia, advice, jokes, weather, reminders, recipes. If you can think of it, Omi can answer it.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">Does it need Wi-Fi? <span class="faq-icon">+</span></button>
+            <div class="faq-a"><p>Yes, Omi connects to your home Wi-Fi. It works offline for basic interactions but needs internet for full AI capabilities.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">Is Omi always listening? <span class="faq-icon">+</span></button>
+            <div class="faq-a"><p>No. Omi only activates when you press the side button. No always-on microphone — your privacy matters.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">What age is Omi for? <span class="faq-icon">+</span></button>
+            <div class="faq-a"><p>Designed for everyone. Kids love its expressive face, adults love its usefulness. Recommended ages 6 and up.</p></div>
+          </div>
+          <div class="faq-item">
+            <button class="faq-q">Do you ship internationally? <span class="faq-icon">+</span></button>
+            <div class="faq-a"><p>Yes! We ship worldwide. Free shipping on all orders. Delivery takes 2–3 weeks depending on your location.</p></div>
+          </div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- SPECS -->
-  <section id="specs" class="specs">
-    <div class="section-label">Specs</div>
-    <h2 class="section-title">Everything inside<br>a small metal box.</h2>
-    <div class="spec-list">
-      <div class="spec-row"><span class="spec-label">Display</span><span class="spec-value">2.4" color LCD, 240×320</span></div>
-      <div class="spec-row"><span class="spec-label">Build</span><span class="spec-value">Brushed aluminium enclosure</span></div>
-      <div class="spec-row"><span class="spec-label">Microphone</span><span class="spec-value">Dual-mic array with noise cancellation</span></div>
-      <div class="spec-row"><span class="spec-label">Speaker</span><span class="spec-value">2W full-range speaker</span></div>
-      <div class="spec-row"><span class="spec-label">Touch</span><span class="spec-value">Capacitive touch surface</span></div>
-      <div class="spec-row"><span class="spec-label">Connectivity</span><span class="spec-value">Wi-Fi 802.11 b/g/n, Bluetooth 5.0</span></div>
-      <div class="spec-row"><span class="spec-label">Battery</span><span class="spec-value">1800 mAh — up to 8 hrs talk time</span></div>
-      <div class="spec-row"><span class="spec-label">Size</span><span class="spec-value">180 × 70 × 70 mm</span></div>
-    </div>
-  </section>
+    <!-- SLIDE 5 — ORDER -->
+    <section class="slide dark" id="slide-5">
+      <div class="slide-inner order-inner">
+        <div class="order-content">
+          <div class="eyebrow">Ready to meet Omi?</div>
+          <h2>$89.<br>Free shipping.<br>Ships in 2 weeks.</h2>
+          <p>30-day returns. 1-year warranty included.</p>
+          <button class="btn-primary large">Order Now</button>
+        </div>
+        <div class="order-footer">
+          <div class="footer-logo">OMI</div>
+          <div class="footer-links-row">
+            <a href="#">Instagram</a>
+            <a href="#">Twitter / X</a>
+            <a href="#">YouTube</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms</a>
+          </div>
+          <p class="footer-copy">© 2025 Omi Interactive. All rights reserved.</p>
+        </div>
+      </div>
+    </section>
 
-  <!-- BUY -->
-  <section id="buy" class="buy">
-    <div class="buy-inner">
-      <div class="buy-eyebrow">Ready to meet Omi?</div>
-      <h2>$89. Free shipping.<br>Ships in 2 weeks.</h2>
-      <p>30-day returns. 1-year warranty included.</p>
-      <a href="#" class="btn-primary large">Order Now</a>
-    </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="footer-logo">OMI</div>
-    <p>© 2025 Omi Interactive. All rights reserved.</p>
-  </footer>
+  </div><!-- /slides-container -->
 
   <script src="script.js"></script>
 </body>

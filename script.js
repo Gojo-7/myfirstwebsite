@@ -1,200 +1,178 @@
-const svg = document.getElementById('omiSvg');
-const hint = document.getElementById('touchHint');
+// ══════════════════════════════
+// FULLSCREEN SLIDE ENGINE
+// ══════════════════════════════
 
-// ── Pixel face expressions ──
-// Each expression modifies the SVG elements directly
+const container  = document.getElementById('slidesContainer');
+const navbar     = document.getElementById('navbar');
+const dotsWrap   = document.getElementById('slideDots');
+const slides     = document.querySelectorAll('.slide');
+const TOTAL      = slides.length;
 
-const expressions = [
-  {
-    name: 'happy',
-    hint: 'heehee 😊',
-    apply() {
-      // Big curved smile - more pixels
-      setMouth([
-        [224,162],[228,166],[232,168],[236,170],[240,170],[244,170],[248,170],[252,168],[256,166],[260,162]
-      ]);
-      // Eyebrows raised - happy
-      setEyebrows(true, false);
-      setScreenColor('#d0f0e0');
-    }
-  },
-  {
-    name: 'surprised',
-    hint: 'woah!! 😮',
-    apply() {
-      // O mouth
-      setMouth([
-        [236,158],[240,158],[244,158],
-        [234,162],[246,162],
-        [234,166],[246,166],
-        [236,170],[240,170],[244,170],
-      ]);
-      setEyebrows(false, true);
-      setScreenColor('#ffeedd');
-    }
-  },
-  {
-    name: 'thinking',
-    hint: 'hmm... 🤔',
-    apply() {
-      // Squiggly mouth
-      setMouth([
-        [228,164],[232,162],[236,164],[240,162],[244,164],[248,162],[252,164]
-      ]);
-      setEyebrows(false, false);
-      setScreenColor('#e8e8ff');
-    }
-  },
-  {
-    name: 'sleepy',
-    hint: 'zzz 😴',
-    apply() {
-      // Flat mouth
-      setMouth([
-        [228,164],[232,164],[236,164],[240,164],[244,164],[248,164],[252,164],[256,164]
-      ]);
-      setEyebrows(false, false);
-      setScreenColor('#e0ddf5');
-      // Half-close eyes
-      halfCloseEyes();
-    }
-  },
-  {
-    name: 'default',
-    hint: 'tap Omi ✦',
-    apply() {
-      setDefaultMouth();
-      setEyebrows(true, false);
-      setScreenColor('#c8e8f5');
-      openEyes();
-    }
-  }
-];
+let current      = 0;
+let isAnimating  = false;
+const ANIM_DURATION = 800; // ms — matches CSS transition
 
-let exprIndex = 0;
+// Dark slides (index-based)
+const darkSlides = [3, 5];
 
-function setScreenColor(color) {
-  const stop1 = document.querySelector('#screenBg stop:first-child');
-  const stop2 = document.querySelector('#screenBg stop:last-child');
-  if (stop1) stop1.setAttribute('stop-color', color);
-  if (stop2) stop2.setAttribute('stop-color', adjustColor(color, -20));
-}
-
-function adjustColor(hex, amount) {
-  // Slightly darken a hex color
-  const num = parseInt(hex.replace('#',''), 16);
-  const r = Math.max(0, Math.min(255, (num >> 16) + amount));
-  const g = Math.max(0, Math.min(255, ((num >> 8) & 0xff) + amount));
-  const b = Math.max(0, Math.min(255, (num & 0xff) + amount));
-  return '#' + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
-}
-
-function setMouth(pixels) {
-  const mouthGroup = document.getElementById('mouth');
-  mouthGroup.innerHTML = '';
-  pixels.forEach(([x, y]) => {
-    const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-    rect.setAttribute('x', x);
-    rect.setAttribute('y', y);
-    rect.setAttribute('width', 4);
-    rect.setAttribute('height', 4);
-    rect.setAttribute('rx', 1);
-    rect.setAttribute('fill', '#2a2a2a');
-    mouthGroup.appendChild(rect);
-  });
-}
-
-function setDefaultMouth() {
-  setMouth([
-    [228,158],[232,162],[236,164],[240,164],[244,164],[248,164],[252,162],[256,158]
-  ]);
-}
-
-function setEyebrows(happy, raised) {
-  // Left eyebrow
-  const lBrow1 = document.querySelector('#leftEye rect:first-child');
-  const lBrow2 = document.querySelector('#leftEye rect:nth-child(2)');
-  const rBrow1 = document.querySelector('#rightEye rect:first-child');
-  const rBrow2 = document.querySelector('#rightEye rect:nth-child(2)');
-
-  if (raised) {
-    lBrow1 && lBrow1.setAttribute('y', 104);
-    lBrow2 && lBrow2.setAttribute('y', 102);
-    rBrow1 && rBrow1.setAttribute('y', 102);
-    rBrow2 && rBrow2.setAttribute('y', 104);
-  } else {
-    lBrow1 && lBrow1.setAttribute('y', 108);
-    lBrow2 && lBrow2.setAttribute('y', 106);
-    rBrow1 && rBrow1.setAttribute('y', 106);
-    rBrow2 && rBrow2.setAttribute('y', 108);
-  }
-}
-
-function halfCloseEyes() {
-  ['#leftEye rect:nth-child(3)', '#rightEye rect:nth-child(3)'].forEach(sel => {
-    const el = document.querySelector(sel);
-    if (el) {
-      el.setAttribute('height', 10);
-      el.setAttribute('ry', 8);
-    }
-  });
-}
-
-function openEyes() {
-  ['#leftEye rect:nth-child(3)', '#rightEye rect:nth-child(3)'].forEach(sel => {
-    const el = document.querySelector(sel);
-    if (el) {
-      el.setAttribute('height', 18);
-      el.setAttribute('ry', 3);
-    }
-  });
-}
-
-// Tap handler
-svg.addEventListener('click', () => {
-  exprIndex = (exprIndex + 1) % expressions.length;
-  const expr = expressions[exprIndex];
-  openEyes();
-  expr.apply();
-  hint.textContent = expr.hint;
-
-  // Wiggle animation
-  svg.style.transform = 'rotate(-3deg) scale(0.96)';
-  setTimeout(() => {
-    svg.style.transform = 'rotate(2deg) scale(1.02)';
-    setTimeout(() => {
-      svg.style.transform = '';
-    }, 100);
-  }, 80);
+// ── Build dots ──
+slides.forEach((_, i) => {
+  const dot = document.createElement('button');
+  dot.classList.add('dot');
+  dot.setAttribute('aria-label', `Go to slide ${i + 1}`);
+  dot.addEventListener('click', () => goTo(i));
+  dotsWrap.appendChild(dot);
 });
 
-// ── Idle random pupil movement ──
-setInterval(() => {
-  const dx = (Math.random() - 0.5) * 5;
-  const dy = (Math.random() - 0.5) * 3;
-  ['lPupil', 'rPupil'].forEach(id => {
-    const el = document.getElementById(id);
-    if (el) {
-      const baseX = id === 'lPupil' ? 176 : 316;
-      const baseY = 118;
-      el.setAttribute('x', baseX + dx);
-      el.setAttribute('y', baseY + dy);
-    }
-  });
-}, 2200);
+const dots = document.querySelectorAll('.dot');
 
-// ── Idle blink ──
-function blink() {
-  ['#leftEye rect:nth-child(3)', '#rightEye rect:nth-child(3)'].forEach(sel => {
-    const el = document.querySelector(sel);
-    if (!el) return;
-    const origH = el.getAttribute('height');
-    el.setAttribute('height', 1);
-    setTimeout(() => el.setAttribute('height', origH), 120);
-  });
-  setTimeout(blink, 3000 + Math.random() * 3000);
+// ── Go to a slide ──
+function goTo(index) {
+  if (index === current || isAnimating) return;
+  isAnimating = true;
+
+  // Deactivate old
+  slides[current].classList.remove('active');
+
+  current = Math.max(0, Math.min(index, TOTAL - 1));
+
+  // Move container
+  container.style.transform = `translateY(-${current * 100}vh)`;
+
+  // Activate new
+  slides[current].classList.add('active');
+
+  // Update nav + dots
+  updateUI();
+
+  setTimeout(() => { isAnimating = false; }, ANIM_DURATION);
 }
-setTimeout(blink, 2000);
 
-// ── Set initial mouth ──
-setDefaultMouth();
+function updateUI() {
+  const isDark = darkSlides.includes(current);
+
+  // Navbar
+  navbar.classList.toggle('dark-nav', isDark);
+
+  // Nav links
+  document.querySelectorAll('.nav-item').forEach(link => {
+    link.classList.toggle('active', parseInt(link.dataset.slide) === current);
+  });
+
+  // Dots
+  dots.forEach((dot, i) => {
+    dot.classList.toggle('active', i === current);
+    dot.classList.toggle('light', isDark);
+  });
+}
+
+// ── Initial state ──
+slides[0].classList.add('active');
+updateUI();
+
+// ══════════════════════════════
+// SCROLL — mousewheel & touch
+// ══════════════════════════════
+let touchStartY = 0;
+let lastScrollTime = 0;
+const SCROLL_COOLDOWN = 900;
+
+window.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const now = Date.now();
+  if (now - lastScrollTime < SCROLL_COOLDOWN) return;
+  lastScrollTime = now;
+
+  if (e.deltaY > 30)       goTo(current + 1);
+  else if (e.deltaY < -30) goTo(current - 1);
+}, { passive: false });
+
+window.addEventListener('touchstart', (e) => {
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener('touchend', (e) => {
+  const diff = touchStartY - e.changedTouches[0].clientY;
+  const now = Date.now();
+  if (now - lastScrollTime < SCROLL_COOLDOWN) return;
+  lastScrollTime = now;
+
+  if (diff > 40)       goTo(current + 1);
+  else if (diff < -40) goTo(current - 1);
+}, { passive: true });
+
+// ══════════════════════════════
+// KEYBOARD
+// ══════════════════════════════
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowDown' || e.key === 'PageDown') goTo(current + 1);
+  if (e.key === 'ArrowUp'   || e.key === 'PageUp')   goTo(current - 1);
+});
+
+// ══════════════════════════════
+// NAV + BUTTON CLICKS
+// ══════════════════════════════
+document.querySelectorAll('[data-slide]').forEach(el => {
+  el.addEventListener('click', (e) => {
+    e.preventDefault();
+    goTo(parseInt(el.dataset.slide));
+    // Close mobile menu if open
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+  });
+});
+
+// ══════════════════════════════
+// HAMBURGER
+// ══════════════════════════════
+const hamburger  = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobileMenu');
+
+hamburger.addEventListener('click', () => {
+  hamburger.classList.toggle('open');
+  mobileMenu.classList.toggle('open');
+});
+
+// ══════════════════════════════
+// COLOR PICKER
+// ══════════════════════════════
+const colorBtns  = document.querySelectorAll('.color-btn');
+const colorNameEl = document.getElementById('colorName');
+const omiImg     = document.getElementById('omiImg');
+
+const colorMap = {
+  silver: { name: 'Silver',      filter: 'none' },
+  black:  { name: 'Slate Black', filter: 'brightness(0.35) contrast(1.1)' },
+  sand:   { name: 'Warm Sand',   filter: 'sepia(0.5) saturate(0.8) brightness(1.05)' },
+};
+
+colorBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    colorBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const { name, filter } = colorMap[btn.dataset.color];
+    colorNameEl.textContent = name;
+
+    omiImg.style.opacity = '0';
+    omiImg.style.transform = 'scale(0.95)';
+    setTimeout(() => {
+      const base = 'drop-shadow(0 20px 44px rgba(0,0,0,0.14))';
+      omiImg.style.filter = filter === 'none' ? base : `${filter} ${base}`;
+      omiImg.style.opacity = '1';
+      omiImg.style.transform = '';
+    }, 180);
+  });
+});
+
+// ══════════════════════════════
+// FAQ ACCORDION
+// ══════════════════════════════
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.parentElement;
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  });
+});
